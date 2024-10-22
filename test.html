@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文祥的炫酷弹幕页面</title>
+    <style>
+        /* 页面基础样式 */
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #000000;  /* 背景统一为黑色 */
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* 设置名字文本的样式 */
+        .name {
+            font-family: 'Arial', sans-serif;
+            font-size: 10vw;
+            font-weight: bold;
+            background: linear-gradient(270deg, #ff6ec4, #7873f5, #76b5f5, #ff8a71);
+            background-size: 600% 600%;
+            -webkit-background-clip: text;
+            color: transparent;
+            animation: gradient 3s ease infinite, colorchange 3s ease infinite;
+            text-shadow: 0 0 20px rgba(255,255,255,0.7), 0 0 30px rgba(255,255,255,0.4);
+            text-align: center;
+        }
+
+        /* 五彩斑斓渐变色的动画 */
+        @keyframes gradient {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        /* 名字颜色变化的动画 */
+        @keyframes colorchange {
+            0%, 100% {
+                filter: hue-rotate(0deg);
+            }
+            50% {
+                filter: hue-rotate(360deg);
+            }
+        }
+
+        /* 弹幕样式 */
+        .comment {
+            position: absolute;
+            white-space: nowrap;
+            font-family: 'Arial', sans-serif;
+            font-size: 24px;
+            color: #fff;
+            text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+            animation: flyAcross 10s linear;
+            pointer-events: none; /* 禁止鼠标交互 */
+        }
+
+        /* 弹幕的横向飞行效果：从屏幕右侧飞入左侧飞出 */
+        @keyframes flyAcross {
+            0% {
+                transform: translateX(100%);  /* 100% 表示在屏幕的右侧外 */
+            }
+            100% {
+                transform: translateX(-100vw); /* 从屏幕的左侧外飞出 */
+            }
+        }
+
+        /* 鼠标特效 */
+        .cursor {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.8);
+            pointer-events: none;
+            mix-blend-mode: difference;
+            animation: cursor-pulse 0.5s alternate infinite;
+        }
+
+        /* 鼠标脉冲效果 */
+        @keyframes cursor-pulse {
+            0% {
+                transform: scale(1);
+            }
+            100% {
+                transform: scale(1.5);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="name">文祥</div>
+
+    <div class="cursor" id="cursor"></div>
+
+    <script>
+        // 弹幕内容列表
+        const comments = [
+            "6666666", 
+            "我草牛啊", 
+            "爱你啊哈哈哈", 
+            "玄啊", 
+            "太强了", 
+            "简直无敌！", 
+            "完美操作！", 
+            "天秀啊！", 
+            "稳如老狗", 
+            "带带我", 
+            "大神无敌！", 
+            "牛逼闪闪", 
+            "不愧是你", 
+            "震撼我全家"
+        ];
+
+        // 获取屏幕高度
+        const screenHeight = window.innerHeight;
+
+        // 鼠标点击时生成弹幕
+        document.addEventListener('click', () => {
+            // 随机选择一个评论
+            const randomComment = comments[Math.floor(Math.random() * comments.length)];
+
+            // 创建弹幕元素
+            const commentElement = document.createElement('div');
+            commentElement.className = 'comment';
+            commentElement.innerText = randomComment;
+
+            // 随机生成弹幕位置（垂直方向）
+            const randomTop = Math.random() * (screenHeight - 50); // 确保弹幕不会超出边界
+            commentElement.style.top = `${randomTop}px`;
+
+            // 将弹幕添加到页面
+            document.body.appendChild(commentElement);
+
+            // 弹幕飞过屏幕后移除
+            setTimeout(() => {
+                document.body.removeChild(commentElement);
+            }, 10000);  // 与动画时长一致
+        });
+
+        // 鼠标特效
+        const cursor = document.getElementById('cursor');
+
+        document.addEventListener('mousemove', (e) => {
+            cursor.style.left = `${e.pageX}px`;
+            cursor.style.top = `${e.pageY}px`;
+        });
+    </script>
+</body>
+</html>
